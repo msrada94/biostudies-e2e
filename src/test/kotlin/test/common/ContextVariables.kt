@@ -4,7 +4,7 @@ object ContextVariables {
     private val variables = mutableMapOf<String, Any>()
 
     operator fun get(key: String): Any {
-        return requireNotNull(variables[key.replace("$","")])
+        return requireNotNull(variables[key.replace("$", "")])
     }
 
     operator fun set(key: String, value: Any) {
@@ -18,7 +18,7 @@ object ContextVariables {
     fun getString(entry: String): String {
         var result = entry
         val stringVariable = variables.filter { it.value is String } as Map<String, String>
-        stringVariable.forEach { (key, value) -> result = result.replace("\$${key}", value) }
+        stringVariable.forEach { (key, value) -> result = result.replace("\$$key", value) }
         return result
     }
 }

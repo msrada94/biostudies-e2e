@@ -14,6 +14,7 @@ import org.springframework.util.LinkedMultiValueMap
 import org.springframework.web.client.RestTemplate
 import test.common.ContextVariables
 import test.common.ContextVariables.getString
+import test.common.HttpMethodNotFoundException
 
 class HttpSteps {
     private val restTemplate = RestTemplate()
@@ -43,7 +44,7 @@ class HttpSteps {
                 "POST" -> HttpMethod.POST
                 "PUT" -> HttpMethod.PUT
                 "DELETE" -> HttpMethod.DELETE
-                else -> throw Exception("Http method \"${method}\" not found")
+                else -> throw HttpMethodNotFoundException(method)
             }
         }
         httpMethod = toHttpMethod(method)

@@ -10,5 +10,4 @@ import org.junit.platform.suite.api.Suite
 @IncludeEngines("cucumber")
 @SelectClasspathResource("features")
 @ConfigurationParameter(key = Constants.GLUE_PROPERTY_NAME, value = "test.steps")
-class RunCucumberTest {
-}
+class RunCucumberTest
