@@ -22,6 +22,7 @@ dependencies {
     testImplementation("org.springframework:spring-web:5.3.23")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")
 
+    testImplementation("org.skyscreamer:jsonassert:1.5.1")
     testImplementation("org.assertj:assertj-core:3.23.1")
     implementation("com.jayway.jsonpath:json-path:2.7.0")
 

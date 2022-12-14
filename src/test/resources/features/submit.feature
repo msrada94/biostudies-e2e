@@ -38,7 +38,7 @@ Feature: Submit a submission with a text file
 
     Given a http request with body:
       """
-      Submission	S-BSST125
+      Submission	S-BSST129
       Title	Sample Submission
       ReleaseDate	2021-02-12
 
@@ -56,7 +56,7 @@ Feature: Submit a submission with a text file
     Then http status code "200" is returned with body:
     """
     {
-      "accno" : "S-BSST125",
+      "accno" : "S-BSST129",
       "attributes" : [ {
         "name" : "Title",
         "value" : "Sample Submission"
@@ -69,24 +69,20 @@ Feature: Submit a submission with a text file
         "files" : [ {
           "path" : "example.txt",
           "size" : 16,
-          "attributes" : [ {
-            "name" : "md5",
-            "value" : "NOT_CALCULATED"
-          } ],
           "type" : "file"
         } ]
       },
       "type" : "submission"
     }
     """
-    And the file "$ftpUrl/S-BSST/125/S-BSST125/Files/example.txt" contains:
+    And the file "$ftpUrl/S-BSST/129/S-BSST129/Files/example.txt" has content:
       """
         Sample content
       """
-    And the file "$ftpUrl/S-BSST/125/S-BSST125/S-BSST125.json" contains:
+    And the file "$ftpUrl/S-BSST/129/S-BSST129/S-BSST129.json" has content:
       """
       {
-        "accno" : "S-BSST125",
+        "accno" : "S-BSST129",
         "attributes" : [ {
           "name" : "Title",
           "value" : "Sample Submission"
@@ -99,31 +95,26 @@ Feature: Submit a submission with a text file
           "files" : [ {
             "path" : "example.txt",
             "size" : 16,
-            "attributes" : [ {
-              "name" : "md5",
-              "value" : "20836FBD4CE5DC65F84CA2FBF938B926"
-            } ],
             "type" : "file"
           } ]
         },
         "type" : "submission"
       }
       """
-    And the file "$ftpUrl/S-BSST/125/S-BSST125/S-BSST125.tsv" contains:
+    And the file "$ftpUrl/S-BSST/129/S-BSST129/S-BSST129.tsv" has content:
       """
-      Submission	S-BSST125
+      Submission	S-BSST129
       Title	Sample Submission
       ReleaseDate	2021-02-12
 
       Study
 
       File	example.txt
-      md5	20836FBD4CE5DC65F84CA2FBF938B926
 
       """
-    And the file "$ftpUrl/S-BSST/125/S-BSST125/S-BSST125.xml" contains:
+    And the file "$ftpUrl/S-BSST/129/S-BSST129/S-BSST129.xml" has content:
       """
-      <?xml version='1.0' encoding='UTF-8'?><submission accno="S-BSST125">
+      <?xml version='1.0' encoding='UTF-8'?><submission accno="S-BSST129">
         <attributes>
           <attribute>
             <name>Title</name>
@@ -139,12 +130,6 @@ Feature: Submit a submission with a text file
             <file size="16">
               <path>example.txt</path>
               <type>file</type>
-              <attributes>
-                <attribute>
-                  <name>md5</name>
-                  <value>20836FBD4CE5DC65F84CA2FBF938B926</value>
-                </attribute>
-              </attributes>
             </file>
           </files>
         </section>
