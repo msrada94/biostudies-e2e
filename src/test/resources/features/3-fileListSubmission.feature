@@ -1,4 +1,4 @@
-Feature: 3 Submit submissions with file lists
+Feature: 3 Submit submissions with file lists.
 
   Shows JSON submissions containing different fileList formats.
   Also submission considering empty files list and reusing previous version fileLists.
@@ -7,9 +7,9 @@ Feature: 3 Submit submissions with file lists
     Given the setup information
       | environmentUrl | http://localhost:8080        |
       | ftpUrl         | /Users/miguel/Biostudies/ftp |
+      | storageMode    | NFS                          |
       | userName       | admin_user@ebi.ac.uk         |
       | userPassword   | 123456                       |
-    * the variable "storageMode" with value "NFS"
     And a http request with body:
       """
       {
@@ -25,7 +25,7 @@ Feature: 3 Submit submissions with file lists
     Then http status code "200" is returned
     And the JSONPath value "$.sessid" from response is saved into "token"
 
-  Scenario: 3.1 Submit a JSON submission with a TSV file list
+  Scenario: 3-1 Submit a JSON submission with a TSV file list
     Given the file "fileList" named "fileList.tsv" with content
     """
     Files	GEN

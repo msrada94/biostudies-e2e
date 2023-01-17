@@ -52,10 +52,11 @@ class HttpSteps {
 
     @And("a http request with form-data body:")
     fun setBodyInFormData(bodyTable: Map<String, List<String?>>) {
+        fun getVariableOrConstant(entry: String): Any = if (entry.startsWith("$")) ContextVariables[entry] else entry
         formDataBodyRequest = LinkedMultiValueMap()
 
         bodyTable.forEach { map ->
-            map.value.filterNotNull().forEach { formDataBodyRequest.add(map.key, ContextVariables[it]) }
+            map.value.filterNotNull().forEach { formDataBodyRequest.add(map.key, getVariableOrConstant(it)) }
         }
     }
 

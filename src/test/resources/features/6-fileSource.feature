@@ -1,14 +1,15 @@
-Feature:
+Feature: 6 Files source.
 
-  Considers submissions and resubmissions with different source files as: user space, group, fire, bypassing files with fire.
+  Considers submissions and resubmissions with different source files as: user space, group, fire,
+  bypassing files with fire.
 
   Background:
     Given the setup information
       | environmentUrl | http://localhost:8080        |
       | ftpUrl         | /Users/miguel/Biostudies/ftp |
+      | storageMode    | NFS                          |
       | userName       | admin_user@ebi.ac.uk         |
       | userPassword   | 123456                       |
-    * the variable "storageMode" with value "NFS"
     And a http request with body:
       """
       {
@@ -24,7 +25,7 @@ Feature:
     Then http status code "200" is returned
     And the JSONPath value "$.sessid" from response is saved into "token"
 
-  Scenario: resubmission with SUBMISSION file source as priority over USER SPACE
+  Scenario: 6-1 resubmission with SUBMISSION file source as priority over USER_SPACE
     # UPLOAD FILES
     Given the file "file" named "File1.txt" with content
     """
@@ -151,7 +152,7 @@ Feature:
     """
 
     # UPLOAD CHANGED FILE
-    Given the file "file" named "File1.txt" with content
+    Given the file "file" named "File1.txt" is modified with the new content
     """
     content file 1 updated
     """
@@ -179,12 +180,10 @@ Feature:
     File	File1.txt
 
     """
-    And the variable "SUBMISSION" with value "SUBMISSION"
-    And the variable "USER_SPACE" with value "USER_SPACE"
     And a http request with form-data body:
-      | preferredSources | $SUBMISSION  | $USER_SPACE |
-      | submission       | $submission  |             |
-      | storageMode      | $storageMode |             |
+      | preferredSources | SUBMISSION   | USER_SPACE |
+      | submission       | $submission  |            |
+      | storageMode      | $storageMode |            |
     * url path "$environmentUrl/submissions"
     * http method "POST"
     * headers

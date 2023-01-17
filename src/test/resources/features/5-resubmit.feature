@@ -7,6 +7,7 @@ Feature: 5 Resubmit submission.
     Given the setup information
       | environmentUrl | http://localhost:8080        |
       | ftpUrl         | /Users/miguel/Biostudies/ftp |
+      | storageMode    | NFS                          |
       | userName       | admin_user@ebi.ac.uk         |
       | userPassword   | 123456                       |
     And a http request with body:
