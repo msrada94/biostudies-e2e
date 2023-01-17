@@ -2,11 +2,11 @@ Feature: Submit a submission with a text file
 
   Background:
     Given the setup information
-      | environmentUrl | http://localhost:8080        |
-      | ftpUrl         | /Users/miguel/Biostudies/ftp |
-      | storageMode    | NFS                          |
-      | userName       | admin_user@ebi.ac.uk         |
-      | userPassword   | 123456                       |
+      | environmentUrl | $ENV_URL             |
+      | ftpUrl         | $ENV_FTP             |
+      | storageMode    | NFS                  |
+      | userName       | admin_user@ebi.ac.uk |
+      | userPassword   | 123456               |
     And a http request with body:
       """
       {

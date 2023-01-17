@@ -18,6 +18,8 @@ dependencies {
     testImplementation("io.cucumber:cucumber-java:7.8.1")
     testImplementation("io.cucumber:cucumber-junit-platform-engine:7.8.1")
     testImplementation("org.junit.platform:junit-platform-suite:1.9.1")
+    testImplementation("org.junit.platform:junit-platform-launcher:1.9.1")
+    testImplementation("org.testcontainers:testcontainers:1.17.6")
 
     testImplementation("org.springframework:spring-web:5.3.23")
     testImplementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.14.0")

@@ -1,0 +1,77 @@
+version: '3.9'
+
+services:
+  mysql:
+    image: mysql:5.7.33
+    restart: always
+    command: --port=3308
+    environment:
+      - MYSQL_ROOT_PASSWORD=1234
+      - MYSQL_DATABASE=biostudies
+    volumes:
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
+
+  mongo:
+    image: mongo:4.0.10
+    healthcheck:
+      test: [ "CMD", "mongo", "--eval", "db.runCommand({ ping: 1 })" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  rabbitmq:
+    image: rabbitmq:3.10-management
+    volumes:
+      - ./rabbitmq-container.conf:/etc/rabbitmq/rabbitmq.conf
+    healthcheck:
+      test: [ "CMD", "rabbitmqctl", "ping" ]
+      interval: 30s
+      timeout: 30s
+      retries: 3
+
+  biostudies:
+    image: msrada/subwebapp:latest
+    environment:
+      - SERVER_PORT=8081
+      # mysql and jpa
+      - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3308/biostudies
+      - SPRING_DATASOURCE_USERNAME=root
+      - SPRING_DATASOURCE_PASSWORD=1234
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
+      - SPRING_JPA_SHOW_SQL=false
+      - SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+      - SPRING_JPA_HIBERNATE_USE_NEW_ID_GENERATOR_MAPPINGS=false
+      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL8Dialect
+
+      # rabbitmq
+      - SPRING_RABBITMQ_HOST=rabbitmq
+      - SPRING_RABBITMQ_USERNAME=test
+      - SPRING_RABBITMQ_PASSWORD=test
+      - SPRING_RABBITMQ_PORT=5673
+      - SPRING_RABBITMQ_LISTENER_DIRECT_PREFETCH=25
+      - SPRING_RABBITMQ_LISTENER_SIMPLE_PREFETCH=25
+
+      # mongo
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/biostudies-mongo-container
+
+      # app
+      - APP_SUBMISSIONPATH=/directories/submission
+      - APP_FTPPATH=/directories/ftp
+      - APP_TEMPDIRPATH=/directories/temp
+      - APP_REQUESTFILESPATH=/directories/requestFiles
+      - APP_FIRETEMPDIRPATH=/directories/fireTemp
+      - APP_SECURITY_FILESDIRPATH=/directories/files
+      - APP_SECURITY_MAGICDIRPATH=/directories/magic
+    volumes:
+      - ${ENV_DIRECTORIES}:/directories
+    depends_on:
+      mysql:
+        condition: service_healthy
+      rabbitmq:
+        condition: service_healthy
+      mongo:
+        condition: service_healthy
