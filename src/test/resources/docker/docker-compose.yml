@@ -34,29 +34,25 @@ services:
       retries: 3
 
   biostudies:
-    image: msrada/subwebapp:latest
+    image: dockerhub.ebi.ac.uk/jcamilorada/biostudies-backend-service/submitter:b7c1e503bc0e93356b26e63d8f8b153c9fb3e847
+    command: docker login dockerhub.ebi.ac.uk -u $USER -p $PASSWORD
     environment:
       - SERVER_PORT=8081
+
+      # mongo
+      - SPRING_DATA_MONGODB_DATABASE=biostudies-mongo-container
+      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017
+
       # mysql and jpa
       - SPRING_DATASOURCE_URL=jdbc:mysql://mysql:3308/biostudies
       - SPRING_DATASOURCE_USERNAME=root
       - SPRING_DATASOURCE_PASSWORD=1234
-      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.mysql.cj.jdbc.Driver
-      - SPRING_JPA_SHOW_SQL=false
-      - SPRING_JPA_HIBERNATE_NAMING_PHYSICAL_STRATEGY=org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
-      - SPRING_JPA_HIBERNATE_USE_NEW_ID_GENERATOR_MAPPINGS=false
-      - SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.MySQL8Dialect
 
       # rabbitmq
       - SPRING_RABBITMQ_HOST=rabbitmq
       - SPRING_RABBITMQ_USERNAME=test
       - SPRING_RABBITMQ_PASSWORD=test
       - SPRING_RABBITMQ_PORT=5673
-      - SPRING_RABBITMQ_LISTENER_DIRECT_PREFETCH=25
-      - SPRING_RABBITMQ_LISTENER_SIMPLE_PREFETCH=25
-
-      # mongo
-      - SPRING_DATA_MONGODB_URI=mongodb://mongo:27017/biostudies-mongo-container
 
       # app
       - APP_SUBMISSIONPATH=/directories/submission
@@ -64,8 +60,13 @@ services:
       - APP_TEMPDIRPATH=/directories/temp
       - APP_REQUESTFILESPATH=/directories/requestFiles
       - APP_FIRETEMPDIRPATH=/directories/fireTemp
+
+      - APP_SECURITY_TOKENHASH=saltNpepper
       - APP_SECURITY_FILESDIRPATH=/directories/files
       - APP_SECURITY_MAGICDIRPATH=/directories/magic
+      - APP_SECURITY_REQUIREACTIVATION=false
+
+      - APP_PERSISTENCE_ENABLEFIRE=false
     volumes:
       - ${ENV_DIRECTORIES}:/directories
     depends_on:
